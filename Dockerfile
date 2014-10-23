@@ -1,5 +1,5 @@
-FROM debian:wheezy
-MAINTAINER s. rannou <mxs@sbrk.org>
+FROM debian:jessie
+MAINTAINER jb. poupon <faltad@sbrk.org>
 
 # Distro
 ENV DEBIAN_FRONTEND noninteractive
@@ -9,39 +9,40 @@ RUN apt-get update
 RUN apt-get install -q -y									\
     	    sudo										\
     	    wget										\
-	    python										\
-	    python-virtualenv									\
 	    openssh-server									\
    	    emacs23-nox										\
 	    git-core										\
     	    zsh											\
 	    tmux										\
 	    htop										\
+	    python										\
+	    python-virtualenv									\
 	    pep8										\
-	    golang										\
 	    python-sphinx									\
 	    jekyll										\
+	    php5										\
+	    apache2
     && apt-get clean -q -y
 
 # Setup ssh
 RUN mkdir /var/run/sshd
 
-# Setup user mxs
-RUN yes | adduser --disabled-password mxs --shell /bin/zsh					\
-    && mkdir -p /home/mxs/.ssh/									\
-    && wget https://github.com/aimxhaisse.keys -O /home/mxs/.ssh/authorized_keys		\
-    && chown -R mxs:mxs /home/mxs								\
-    && chmod 700 /home/mxs/.ssh									\
-    && chmod 600 /home/mxs/.ssh/authorized_keys							\
-    && echo '%mxs   ALL= NOPASSWD: ALL' >> /etc/sudoers						\
-    && sudo -u mxs sh -c 'cd /home/mxs ; wget http://install.ohmyz.sh -O - | sh || true'
+# Setup user faltad
+RUN yes | adduser --disabled-password faltad --shell /bin/zsh					\
+    && mkdir -p /home/faltad/.ssh/									\
+    && wget https://github.com/faltad.keys -O /home/faltad/.ssh/authorized_keys		\
+    && chown -R faltad:faltad /home/faltad								\
+    && chmod 700 /home/faltad/.ssh									\
+    && chmod 600 /home/faltad/.ssh/authorized_keys							\
+    && echo '%faltad   ALL= NOPASSWD: ALL' >> /etc/sudoers						\
+    && sudo -u faltad sh -c 'cd /home/faltad ; wget http://install.ohmyz.sh -O - | sh || true'
 
 # Confs and files
 ADD confs/motd /etc/motd
-ADD confs/emacs /home/mxs/.emacs
-ADD confs/gitconfig /home/mxs/.gitconfig
-ADD confs/zsh /home/mxs/.zshrc
-RUN chown mxs:mxs /home/mxs/.emacs /home/mxs/.gitconfig /home/mxs/.zshrc
+ADD confs/emacs /home/faltad/.emacs
+ADD confs/gitconfig /home/faltad/.gitconfig
+ADD confs/zsh /home/faltad/.zshrc
+RUN chown faltad:faltad /home/faltad/.emacs /home/faltad/.gitconfig /home/faltad/.zshrc
 
 EXPOSE 22
 CMD ["/usr/sbin/sshd", "-D"]
