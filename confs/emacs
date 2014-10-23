@@ -1,4 +1,4 @@
-;; s. rannou <mxs@sbrk.org>
+(add-to-list 'load-path "~/.emacs.d/")
 
 ;; misc settings
 (setq make-backup-files nil)		; no *~
@@ -8,4 +8,16 @@
 (display-time-mode t)			; display time
 (setq vc-follow-symlinks t)		; be nice with symlinks
 (set-language-environment "UTF-8")	; be nice with accents
-(setq confirm-kill-emacs 'yes-or-no-p)	; ask before killing
+
+(require 'php-mode)
+
+(require 'web-mode)
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.[gj]sp\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.css?\\'" . web-mode))

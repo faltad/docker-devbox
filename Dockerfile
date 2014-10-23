@@ -11,6 +11,7 @@ RUN apt-get install -q -y									\
     	    wget										\
 	    openssh-server									\
    	    emacs23-nox										\
+	    auto-complete-el									\
 	    git-core										\
     	    zsh											\
 	    tmux										\
@@ -37,11 +38,17 @@ RUN yes | adduser --disabled-password faltad --shell /bin/zsh					\
     && echo '%faltad   ALL= NOPASSWD: ALL' >> /etc/sudoers						\
     && sudo -u faltad sh -c 'cd /home/faltad ; wget http://install.ohmyz.sh -O - | sh || true'
 
+
 # Confs and files
 ADD confs/motd /etc/motd
 ADD confs/emacs /home/faltad/.emacs
 ADD confs/gitconfig /home/faltad/.gitconfig
 ADD confs/zsh /home/faltad/.zshrc
+
+RUN mkdir /home/faltad/.emacs.d										\
+    && wget https://raw.githubusercontent.com/ejmr/php-mode/master/php-mode.el -O /home/faltad/.emacs.d/php-mode.el	\
+    && wget https://raw.githubusercontent.com/fxbois/web-mode/master/web-mode.el -O /home/faltad/.emacs.d/web-mode.el
+
 RUN chown faltad:faltad /home/faltad/.emacs /home/faltad/.gitconfig /home/faltad/.zshrc
 
 EXPOSE 22
